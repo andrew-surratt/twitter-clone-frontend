@@ -1,17 +1,18 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import {createTweet} from "../services/twitterApi";
-import {useSession} from "../hooks/useSession";
+import {AuthContext} from "../providers/AppProviders";
+import {config} from "../config/config";
 
 // Define a custom component for adding a new tweet
 export const CreateTweet = () => {
-    const [session] = useSession();
+    const {session} = useContext(AuthContext);
     const [content, setContent] = useState("");
 
     const handleSubmit = (e) => {
         e.preventDefault();
         createTweet({
-            content,
-            username: session.username,
+            tweetText: content,
+            ...session,
         });
         setContent("");
     };
@@ -20,7 +21,7 @@ export const CreateTweet = () => {
         <form onSubmit={handleSubmit} className="flex flex-col p-4 border-b border-gray-200">
             <div className="flex flex-row">
                 <img
-                    src={session.userImage}
+                    src={session.userImage || config.ui.profilePictureDefault}
                     alt={session.username}
                     className="flex flex-initial w-12 h-12"
                 />
