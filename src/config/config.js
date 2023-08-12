@@ -6,6 +6,6 @@ export const config = {
     tweetPath: '/tweet',
   },
   ui: {
-    profilePictureDefault: '../logo192.png',
+    profilePictureDefault: 'https://api.iconify.design/twemoji/robot.svg',
   },
 };
