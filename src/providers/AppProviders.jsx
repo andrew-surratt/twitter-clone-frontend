@@ -7,7 +7,9 @@ export const AppProviders = ({ children }) => {
   const [session, setSession] = useState({
     username: null,
     password: null,
-    userImage: config.ui.profilePictureDefault,
+    firstname: null,
+    lastname: null,
+    profilePictureUrl: config.ui.profilePictureDefault,
   });
 
   return (

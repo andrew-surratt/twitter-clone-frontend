@@ -24,7 +24,7 @@ export const CreateTweet = () => {
     >
       <div className="flex flex-row">
         <img
-          src={session.userImage || config.ui.profilePictureDefault}
+          src={session.profilePictureUrl || config.ui.profilePictureDefault}
           alt={session.username}
           className="flex flex-initial w-12 h-12"
         />
