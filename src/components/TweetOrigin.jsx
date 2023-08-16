@@ -1,14 +1,19 @@
 import React from 'react';
 import { Icon } from '@iconify/react';
 import { Tweet } from './Tweet';
+import { CreateTweet } from './CreateTweet';
+import { createReply } from '../services/twitterApi';
 
 // Define a custom component for displaying tweets
-export const TweetOrigin = ({ tweet }) => {
-  const image = tweet.user.profilePictureUrl;
-  const firstname = tweet.user.firstname;
-  const lastname = tweet.user.lastname;
-  const username = tweet.user.username;
+export const TweetOrigin = ({ tweet, resetTweets }) => {
+  const {
+    profilePictureUrl: image,
+    firstname,
+    lastname,
+    username,
+  } = tweet.user;
   const tweetText = tweet.tweet;
+  const dateCreated = tweet.created;
   return (
     <div className="border-b border-gray-200">
       <Tweet
@@ -16,6 +21,7 @@ export const TweetOrigin = ({ tweet }) => {
         profilePicture={image}
         firstname={firstname}
         lastname={lastname}
+        dateCreated={dateCreated}
         tweetText={tweetText}
       />
       <div>
@@ -36,10 +42,11 @@ export const TweetOrigin = ({ tweet }) => {
             {tweet.replies?.map((reply) => {
               return (
                 <Tweet
-                  username={reply.username}
-                  profilePicture={null}
-                  firstname={null}
-                  lastname={null}
+                  username={reply.user.username}
+                  profilePicture={reply.user.profilePictureUrl}
+                  firstname={reply.user.firstname}
+                  lastname={reply.user.lastname}
+                  dateCreated={reply.created}
                   tweetText={reply.reply}
                 />
               );
@@ -48,6 +55,22 @@ export const TweetOrigin = ({ tweet }) => {
         ) : (
           <></>
         )}
+        <div className="ml-10 border-l border-gray-200">
+          <CreateTweet
+            resetTweets={resetTweets}
+            createHandler={({ content, username, password }) =>
+              createReply({
+                tweetId: tweet.tweetId,
+                replyText: content,
+                username,
+                password,
+              })
+            }
+            inputPlaceholder={'Post your reply!'}
+            buttonText={'Reply'}
+            formClass={'flex flex-row p-4 w-full'}
+          />
+        </div>
       </div>
     </div>
   );

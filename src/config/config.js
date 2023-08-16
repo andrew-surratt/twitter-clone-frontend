@@ -4,6 +4,7 @@ export const config = {
     userPath: '/user',
     tweetsPath: '/tweets',
     tweetPath: '/tweet',
+    replyPath: '/reply',
   },
   ui: {
     profilePictureDefault: 'https://api.iconify.design/twemoji/robot.svg',

@@ -102,3 +102,32 @@ export const createTweet = async ({ username, password, tweetText }) => {
     handleAxiosError(e);
   }
 };
+
+export const createReply = async ({
+  username,
+  password,
+  tweetId,
+  replyText,
+}) => {
+  try {
+    const { baseUrl, replyPath } = config.twitterBE;
+    const data = {
+      tweetId,
+      replyText,
+    };
+    return (
+      await axios.post(baseUrl + replyPath, data, {
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        auth: {
+          username,
+          password,
+        },
+      })
+    ).data;
+  } catch (e) {
+    handleAxiosError(e);
+  }
+};

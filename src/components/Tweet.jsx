@@ -6,6 +6,7 @@ export const Tweet = ({
   profilePicture,
   firstname,
   lastname,
+  dateCreated,
   tweetText,
 }) => {
   return (
@@ -21,6 +22,9 @@ export const Tweet = ({
             {firstname} {lastname}
           </h4>
           <h4 className="text-sm text-gray-600 pl-1">@{username}</h4>
+          <h4 className="text-sm text-gray-600 pl-1">
+            - {new Date(dateCreated).toString()}
+          </h4>
         </div>
         <div className="text-sm text-gray-600 whitespace-normal break-words">
           {tweetText}
