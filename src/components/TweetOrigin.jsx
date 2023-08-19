@@ -4,7 +4,6 @@ import { Tweet } from './Tweet';
 import { CreateTweet } from './CreateTweet';
 import { createReply } from '../services/twitterApi';
 
-// Define a custom component for displaying tweets
 export const TweetOrigin = ({ tweet, resetTweets }) => {
   const {
     profilePictureUrl: image,

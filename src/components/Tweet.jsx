@@ -1,6 +1,14 @@
 import { config } from '../config/config';
 import React from 'react';
 
+const replaceLinksWithHtmlLinks = (tweetText) => {
+  const expression = /https*:\S+/g;
+  return tweetText.replaceAll(
+    expression,
+    (link) => `<a href=${link}>${link}</a>`,
+  );
+};
+
 export const Tweet = ({
   username,
   profilePicture,
@@ -9,6 +17,7 @@ export const Tweet = ({
   dateCreated,
   tweetText,
 }) => {
+  const textWithLinksRendered = replaceLinksWithHtmlLinks(tweetText);
   return (
     <div className="flex p-4 border-b border-gray-200">
       <img
@@ -26,9 +35,10 @@ export const Tweet = ({
             - {new Date(dateCreated).toString()}
           </h4>
         </div>
-        <div className="text-sm text-gray-600 whitespace-normal break-words">
-          {tweetText}
-        </div>
+        <div
+          className="text-sm text-gray-600 whitespace-normal break-words"
+          dangerouslySetInnerHTML={{ __html: textWithLinksRendered }}
+        />
       </div>
     </div>
   );

@@ -27,6 +27,35 @@ export const signIn = async ({ username, password }) => {
     }
   } catch (e) {
     handleAxiosError(e);
+    throw e;
+  }
+};
+
+export const signUp = async ({ username, password }) => {
+  try {
+    const { baseUrl, userPath } = config.twitterBE;
+    const data = {
+      username,
+    };
+    const response = await axios.post(baseUrl + userPath, data, {
+      headers: {
+        Accept: 'application/json',
+      },
+      auth: {
+        username,
+        password,
+      },
+    });
+    if (response.data.username === username) {
+      console.log(`Successfully signed up.`);
+      return {
+        ...response.data,
+        username,
+        password,
+      };
+    }
+  } catch (e) {
+    handleAxiosError(e);
   }
 };
 
