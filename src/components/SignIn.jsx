@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { AuthContext } from '../providers/AppProviders';
-import { signIn } from '../services/twitterApi';
+import { signIn, signUp } from '../services/twitterApi';
 
 export const SignIn = () => {
   const { setSession } = useContext(AuthContext);
@@ -11,7 +11,11 @@ export const SignIn = () => {
     e.preventDefault();
     signIn({ username, password })
       .then((result) => setSession(result))
-      .catch(console.error);
+      .catch(() =>
+        signUp({ username, password })
+          .then((result) => setSession(result))
+          .catch(console.error),
+      );
   };
 
   return (

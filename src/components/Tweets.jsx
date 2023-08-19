@@ -1,14 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Tweet } from './Tweet';
-import { AuthContext } from '../providers/AppProviders';
-import { getTweets } from '../services/twitterApi';
+import React from 'react';
+import { TweetOrigin } from './TweetOrigin';
 
-export const Tweets = () => {
-  const { session } = useContext(AuthContext);
-  const [tweets, setTweets] = useState([]);
-  useEffect(() => {
-    getTweets(session).then((tweets) => setTweets(tweets));
-  }, [session]);
-
-  return tweets.map((tweet) => <Tweet key={tweet.tweetId} tweet={tweet} />);
+export const Tweets = ({ tweets, resetTweets }) => {
+  return tweets.map((tweet) => (
+    <TweetOrigin key={tweet.tweetId} tweet={tweet} resetTweets={resetTweets} />
+  ));
 };
