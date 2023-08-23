@@ -1,7 +1,8 @@
 import { config } from '../config/config';
-import React from 'react';
+import React, { FC } from 'react';
+import { TweetProps } from './types';
 
-const replaceLinksWithHtmlLinks = (tweetText) => {
+const replaceLinksWithHtmlLinks = (tweetText: string): string => {
   const expression = /https*:\S+/g;
   return tweetText.replaceAll(
     expression,
@@ -9,14 +10,14 @@ const replaceLinksWithHtmlLinks = (tweetText) => {
   );
 };
 
-export const Tweet = ({
+export const Tweet: FC<TweetProps> = ({
   username,
   profilePicture,
   firstname,
   lastname,
   dateCreated,
   tweetText,
-}) => {
+}: TweetProps) => {
   const textWithLinksRendered = replaceLinksWithHtmlLinks(tweetText);
   return (
     <div className="flex p-4 border-b border-gray-200">

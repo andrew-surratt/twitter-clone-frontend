@@ -1,24 +1,31 @@
-import React, { useContext, useState } from 'react';
+import React, { FC, useContext, useState } from 'react';
 import { AuthContext } from '../providers/AppProviders';
 import { config } from '../config/config';
+import { CreateTweetProps } from './types';
 
-export const CreateTweet = ({
+export const CreateTweet: FC<CreateTweetProps> = ({
   resetTweets,
   createHandler,
   buttonText,
   inputPlaceholder,
   formClass,
-}) => {
+}: CreateTweetProps) => {
   const { session } = useContext(AuthContext);
   const [content, setContent] = useState('');
+  const {
+    profilePictureUrl = '',
+    username = '',
+    password = '',
+  } = session ?? {};
   const buttonTextContent = buttonText ?? 'Tweet';
-  const inputPlaceholderContent = inputPlaceholder ?? "What's happening?";
+  const inputPlaceholderContent = inputPlaceholder ?? `What's happening?`;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
     createHandler({
       content,
-      ...session,
+      username,
+      password,
     })
       .then((_) => resetTweets())
       .catch(console.error);
@@ -31,8 +38,8 @@ export const CreateTweet = ({
     <form onSubmit={handleSubmit} className={formClassText}>
       <div className="flex flex-1 pr-4">
         <img
-          src={session.profilePictureUrl || config.ui.profilePictureDefault}
-          alt={session.username}
+          src={profilePictureUrl || config.ui.profilePictureDefault}
+          alt={username}
           className="flex flex-initial w-12 h-12"
         />
         <input

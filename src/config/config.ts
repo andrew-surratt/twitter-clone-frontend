@@ -1,4 +1,6 @@
-export const config = {
+import { AppConfig } from './types';
+
+export const config: AppConfig = {
   twitterBE: {
     baseUrl: 'http://localhost:8080',
     userPath: '/user',
