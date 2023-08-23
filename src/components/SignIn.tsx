@@ -1,19 +1,19 @@
-import React, { useContext, useState } from 'react';
+import React, { FC, useContext, useState } from 'react';
 import { AuthContext } from '../providers/AppProviders';
 import { signIn, signUp } from '../services/twitterApi';
 
-export const SignIn = () => {
+export const SignIn: FC = () => {
   const { setSession } = useContext(AuthContext);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
     signIn({ username, password })
-      .then((result) => setSession(result))
+      .then((result) => setSession && setSession(result))
       .catch(() =>
         signUp({ username, password })
-          .then((result) => setSession(result))
+          .then((result) => setSession && setSession(result))
           .catch(console.error),
       );
   };

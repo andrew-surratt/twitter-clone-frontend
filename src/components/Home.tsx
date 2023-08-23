@@ -1,9 +1,9 @@
 import { Icon } from '@iconify/react';
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import { ProfileView } from './ProfileView';
 import { FeedView } from './FeedView';
 
-export const Home = () => {
+export const Home: FC = () => {
   const [homeRoute, setHomeRoute] = useState('Feed');
   return (
     <>

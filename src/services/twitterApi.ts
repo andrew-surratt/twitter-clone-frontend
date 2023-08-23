@@ -1,14 +1,26 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { config } from '../config/config';
+import {
+  AuthParams,
+  CreateReplyParams,
+  CreateTweetParams,
+  Reply,
+  Tweet,
+  UpdateProfileParams,
+} from './types';
+import { Session } from '../providers/types';
 
-const handleAxiosError = (e) => {
+const handleAxiosError = (e: unknown): void => {
   console.error(JSON.stringify(e, null, 2));
 };
 
-export const signIn = async ({ username, password }) => {
+export const signIn = async ({
+  username,
+  password,
+}: AuthParams): Promise<Session | null> => {
   try {
     const { baseUrl, userPath } = config.twitterBE;
-    const response = await axios.get(baseUrl + userPath, {
+    const response = await axios.get<Session>(baseUrl + userPath, {
       headers: {
         Accept: 'application/json',
       },
@@ -24,20 +36,26 @@ export const signIn = async ({ username, password }) => {
         username,
         password,
       };
+    } else {
+      console.error(`Failed to log in ${username}`);
+      return null;
     }
-  } catch (e) {
+  } catch (e: unknown) {
     handleAxiosError(e);
     throw e;
   }
 };
 
-export const signUp = async ({ username, password }) => {
+export const signUp = async ({
+  username,
+  password,
+}: AuthParams): Promise<Session | null> => {
   try {
     const { baseUrl, userPath } = config.twitterBE;
     const data = {
       username,
     };
-    const response = await axios.post(baseUrl + userPath, data, {
+    const response = await axios.post<Session>(baseUrl + userPath, data, {
       headers: {
         Accept: 'application/json',
       },
@@ -47,16 +65,19 @@ export const signUp = async ({ username, password }) => {
       },
     });
     if (response.data.username === username) {
-      console.log(`Successfully signed up.`);
+      console.log(`Successfully signed up ${username}`);
       return {
         ...response.data,
         username,
         password,
       };
+    } else {
+      console.error(`Failed to sign up user ${username}`);
     }
   } catch (e) {
     handleAxiosError(e);
   }
+  return null;
 };
 
 export const updateProfile = async ({
@@ -65,7 +86,7 @@ export const updateProfile = async ({
   firstname,
   lastname,
   profilePictureUrl,
-}) => {
+}: UpdateProfileParams): Promise<void> => {
   try {
     const { baseUrl, userPath } = config.twitterBE;
     const data = {
@@ -90,11 +111,14 @@ export const updateProfile = async ({
   }
 };
 
-export const getTweets = async ({ username, password }) => {
+export const getTweets = async ({
+  username,
+  password,
+}: AuthParams): Promise<Tweet[] | null> => {
   try {
     const { baseUrl, tweetsPath } = config.twitterBE;
     return (
-      await axios.get(baseUrl + tweetsPath, {
+      await axios.get<Tweet[]>(baseUrl + tweetsPath, {
         headers: {
           Accept: 'application/json',
         },
@@ -106,17 +130,24 @@ export const getTweets = async ({ username, password }) => {
     ).data;
   } catch (e) {
     handleAxiosError(e);
+    return null;
   }
 };
 
-export const createTweet = async ({ username, password, tweetText }) => {
+export const createTweet = async ({
+  username,
+  password,
+  tweetText,
+}: CreateTweetParams): Promise<Tweet | null> => {
   try {
     const { baseUrl, tweetPath } = config.twitterBE;
     const data = {
       tweetText,
     };
-    return (
-      await axios.post(baseUrl + tweetPath, data, {
+    const response: AxiosResponse<Tweet> = await axios.post<Tweet>(
+      baseUrl + tweetPath,
+      data,
+      {
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json',
@@ -125,10 +156,12 @@ export const createTweet = async ({ username, password, tweetText }) => {
           username,
           password,
         },
-      })
-    ).data;
+      },
+    );
+    return response.data;
   } catch (e) {
     handleAxiosError(e);
+    return null;
   }
 };
 
@@ -137,7 +170,7 @@ export const createReply = async ({
   password,
   tweetId,
   replyText,
-}) => {
+}: CreateReplyParams): Promise<Reply | null> => {
   try {
     const { baseUrl, replyPath } = config.twitterBE;
     const data = {
@@ -145,7 +178,7 @@ export const createReply = async ({
       replyText,
     };
     return (
-      await axios.post(baseUrl + replyPath, data, {
+      await axios.post<Reply>(baseUrl + replyPath, data, {
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json',
@@ -158,5 +191,6 @@ export const createReply = async ({
     ).data;
   } catch (e) {
     handleAxiosError(e);
+    return null;
   }
 };

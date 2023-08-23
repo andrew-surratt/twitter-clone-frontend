@@ -1,22 +1,29 @@
-import React, { useContext, useState } from 'react';
+import React, { FC, useContext, useState } from 'react';
 import { AuthContext } from '../providers/AppProviders';
 import { updateProfile } from '../services/twitterApi';
 
-export const ProfileView = () => {
+export const ProfileView: FC = () => {
   const { session } = useContext(AuthContext);
-  const [firstname, setFirstname] = useState(session.firstname);
-  const [lastname, setLastname] = useState(session.lastname);
+  const {
+    username = '',
+    password = '',
+    firstname: sessionFirstname = '',
+    lastname: sessionLastname = '',
+    profilePictureUrl: sessionProfilePictureUrl = '',
+  } = session ?? {};
+  const [firstname, setFirstname] = useState(sessionFirstname);
+  const [lastname, setLastname] = useState(sessionLastname);
   const [profilePictureUrl, setProfilePictureUrl] = useState(
-    session.profilePictureUrl,
+    session?.profilePictureUrl,
   );
   const handleSubmit = () => {
     console.log('Submitting profile update.');
     updateProfile({
-      username: session.username,
-      password: session.password,
+      username,
+      password,
       firstname,
       lastname,
-      profilePictureUrl,
+      profilePictureUrl: sessionProfilePictureUrl,
     })
       .then((_) => console.log('Successfully updated profile.'))
       .catch(console.error);

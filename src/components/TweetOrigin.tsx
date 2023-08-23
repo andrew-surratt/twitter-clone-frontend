@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Icon } from '@iconify/react';
 import { Tweet } from './Tweet';
 import { CreateTweet } from './CreateTweet';
 import { createReply } from '../services/twitterApi';
+import { CreateTweetHandlerParams, TweetOriginProps } from './types';
+import { Reply } from '../services/types';
 
-export const TweetOrigin = ({ tweet, resetTweets }) => {
+export const TweetOrigin: FC<TweetOriginProps> = ({
+  tweet,
+  resetTweets,
+}: TweetOriginProps) => {
   const {
     profilePictureUrl: image,
     firstname,
@@ -13,6 +18,17 @@ export const TweetOrigin = ({ tweet, resetTweets }) => {
   } = tweet.user;
   const tweetText = tweet.tweet;
   const dateCreated = tweet.created;
+  const createTweetHandler = ({
+    content,
+    username,
+    password,
+  }: CreateTweetHandlerParams): Promise<Reply | null> =>
+    createReply({
+      tweetId: tweet.tweetId,
+      replyText: content,
+      username,
+      password,
+    });
   return (
     <div className="border-b border-gray-200">
       <Tweet
@@ -57,14 +73,7 @@ export const TweetOrigin = ({ tweet, resetTweets }) => {
         <div className="ml-10 border-l border-gray-200">
           <CreateTweet
             resetTweets={resetTweets}
-            createHandler={({ content, username, password }) =>
-              createReply({
-                tweetId: tweet.tweetId,
-                replyText: content,
-                username,
-                password,
-              })
-            }
+            createHandler={createTweetHandler}
             inputPlaceholder={'Post your reply!'}
             buttonText={'Reply'}
             formClass={'flex flex-row p-4 w-full'}
