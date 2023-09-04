@@ -1,6 +1,7 @@
 import { config } from '../config/config';
 import React, { FC } from 'react';
 import { TweetProps } from './types';
+import { formatISODatetime } from '../services/datetime';
 
 const replaceLinksWithHtmlLinks = (tweetText: string): string => {
   const expression = /https*:\S+/g;
@@ -33,7 +34,7 @@ export const Tweet: FC<TweetProps> = ({
           </h4>
           <h4 className="text-sm text-gray-600 pl-1">@{username}</h4>
           <h4 className="text-sm text-gray-600 pl-1">
-            - {new Date(dateCreated).toString()}
+            - {formatISODatetime(dateCreated)}
           </h4>
         </div>
         <div
