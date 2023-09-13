@@ -14,7 +14,7 @@ export const ProfileView: FC = () => {
   const [firstname, setFirstname] = useState(sessionFirstname);
   const [lastname, setLastname] = useState(sessionLastname);
   const [profilePictureUrl, setProfilePictureUrl] = useState(
-    session?.profilePictureUrl,
+    sessionProfilePictureUrl,
   );
   const handleSubmit = () => {
     console.log('Submitting profile update.');
@@ -23,7 +23,7 @@ export const ProfileView: FC = () => {
       password,
       firstname,
       lastname,
-      profilePictureUrl: sessionProfilePictureUrl,
+      profilePictureUrl,
     })
       .then((_) => console.log('Successfully updated profile.'))
       .catch(console.error);
