@@ -2,7 +2,7 @@
 
 Minimal twitter UI clone, can be used with [Twitter Backend](https://github.com/andrew-surratt/twitter-clone-backend) for an API.
 
-![Twitter Demo](https://github.com/andrew-surratt/twitter-clone-frontend/blob/main/docs/Twitter-Demo.gif)
+![Twitter Demo](https://github.com/andrew-surratt/twitter-clone-frontend/blob/master/docs/Twitter-Demo.gif)
 
 ## Install Dependencies
 
